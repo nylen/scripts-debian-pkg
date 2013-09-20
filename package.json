@@ -16,6 +16,10 @@
         "debian",
         "packages"
     ],
+    "scripts" : {
+        "postinstall" : "scripts/install.sh",
+        "uninstall"   : "scripts/install.sh"
+    },
     "bin" : {
         "pkg"      : "bin/pkg",
         "pkg-info" : "bin/pkg-info"

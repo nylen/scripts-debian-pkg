@@ -1,0 +1,20 @@
+#!/bin/bash
+
+_pkg_list()
+{
+  local cur actions
+
+  COMPREPLY=()
+  cur=`_get_cword`
+  if [ ${COMP_WORDS[0]} = pkg ]; then
+    actions='update upgrade dselect-upgrade
+        dist-upgrade install remove source build-dep
+        check clean autoclean autoremove purge reinstall'
+    actions=`for i in $actions; do echo "/$i $i .$i "; done`
+  fi
+
+  #echo "$actions"
+  COMPREPLY=( $( compgen -W "$actions" -- $cur ; apt-cache --no-generate pkgnames -- "$cur" 2> /dev/null ))
+  return 0
+}
+complete -F _pkg_list pkg pkg-list

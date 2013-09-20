@@ -7,7 +7,12 @@ The scripts are packaged using `npm` for convenience.
 
 ## Installation
 
-    sudo npm intstall -g scripts-debian-pkg
+    sudo npm install -g --unsafe-perm scripts-debian-pkg
+
+The `--unsafe-perm` is needed so that `npm` will run the simple
+`scripts/install.sh` script as root.  Similarly, to uninstall:
+
+    sudo npm rm -g --unsafe-perm scripts-debian-pkg
 
 ## Scripts
 
