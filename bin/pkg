@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# First argument could be a command or a package name - we'll find out later
+arg1=`echo $1 | grep -Eo "[^./].*"`
+shift
+
+# Default command is install
+cmd="install"
+
+# apt-get commands
+echo '
+ autoclean check dselect-upgrade source 
+ autoremove clean install update 
+ build-dep dist-upgrade remove upgrade purge 
+ reinstall 
+' | grep -q " $arg1 " && cmd=
+
+# If command is 'reinstall', do 'install --reinstall'
+[ "$arg1" = "reinstall" ] && arg1="install" && arg2="--reinstall"
+
+# Use sudo if not root, unless getting package sources
+[ `id -u` != 0 -a "$arg1" != source ] && sudo=sudo
+
+# Run apt-get
+$sudo apt-get $cmd $arg1 $arg2 "$@"

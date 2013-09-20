@@ -1,0 +1,23 @@
+{
+    "name"        : "scripts-debian-pkg",
+    "author"      : "James Nylen <jnylen@gmail.com>",
+    "description" : "'PACKAGE DESCRIPTION'",
+    "version"     : "0.0.1",
+    "repository"  : {
+        "type" : "git",
+        "url"  : "https://github.com/nylen/scripts-debian-pkg"
+    },
+    "bugs" : {
+        "url" : "https://github.com/nylen/scripts-debian-pkg/issues"
+    },
+    "license"  : "MIT",
+    "keywords" : [
+        "scripts",
+        "debian",
+        "packages"
+    ],
+    "bin" : {
+        "pkg"      : "bin/pkg",
+        "pkg-info" : "bin/pkg-info"
+    }
+}

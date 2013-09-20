@@ -1,0 +1,34 @@
+#!/bin/sh
+[ "$1" = __notfirst ] && shift && echo ""
+
+export SHOW_DEPENDS=yes
+#export SHOW_DEPENDS=no
+[ "$1" = "-d" ] && shift && export SHOW_DEPENDS=yes
+
+echo "Package: $1"
+status=`(dpkg --get-selections "$1" | sed 's/^.*\s\+//') 2>&1`
+case $status in
+  install)
+    echo 'Installed: yes'
+    ;;
+  deinstall)
+    echo 'Installed: no'
+    ;;
+  hold)
+    echo 'Installed: yes (hold current version)'
+    ;;
+  *)
+    echo 'Installed: unknown, probably not'
+    echo "dpkg status: $status"
+    ;;
+esac
+
+[ $SHOW_DEPENDS = yes ] && depends="|Depends"
+
+apt-cache --show-all-versions=no show "$1" 2>&1\
+ | grep -E "^(Installed-Size|Version$depends|Size|Description|Homepage|[WE]:| )"\
+ | sed 's/^\(Installed-Size: [0-9]\+\)$/\1kB/'\
+ | awk '/^Size/ {print "Download-"$1, int(.5+$2/1024)"kB"} !/^Size/ {print}'\
+
+[ x"$2" != x ] && shift && pkg-info __notfirst "$@"
+
