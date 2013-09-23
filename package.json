@@ -1,8 +1,8 @@
 {
     "name"        : "scripts-debian-pkg",
     "author"      : "James Nylen <jnylen@gmail.com>",
-    "description" : "'PACKAGE DESCRIPTION'",
-    "version"     : "0.0.1",
+    "description" : "Scripts that assist in working with Debian packages via apt.",
+    "version"     : "0.0.2",
     "repository"  : {
         "type" : "git",
         "url"  : "https://github.com/nylen/scripts-debian-pkg"
