@@ -17,4 +17,4 @@ _pkg_list()
   COMPREPLY=( $( compgen -W "$actions" -- $cur ; apt-cache --no-generate pkgnames -- "$cur" 2> /dev/null ))
   return 0
 }
-complete -F _pkg_list pkg pkg-list
+complete -F _pkg_list pkg pkg-info
