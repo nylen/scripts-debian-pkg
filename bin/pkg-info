@@ -1,9 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 [ "$1" = __notfirst ] && shift && echo ""
 
 export SHOW_DEPENDS=yes
 #export SHOW_DEPENDS=no
 [ "$1" = "-d" ] && shift && export SHOW_DEPENDS=yes
+
+code=0
 
 echo "Package: $1"
 status=`(dpkg --get-selections "$1" | sed 's/^.*\s\+//') 2>&1`
@@ -13,6 +15,7 @@ case $status in
     ;;
   deinstall)
     echo 'Installed: no'
+    code=1
     ;;
   hold)
     echo 'Installed: yes (hold current version)'
@@ -20,6 +23,7 @@ case $status in
   *)
     echo 'Installed: unknown, probably not'
     echo "dpkg status: $status"
+    code=1
     ;;
 esac
 
@@ -30,5 +34,9 @@ apt-cache --show-all-versions=no show "$1" 2>&1\
  | sed 's/^\(Installed-Size: [0-9]\+\)$/\1kB/'\
  | awk '/^Size/ {print "Download-"$1, int(.5+$2/1024)"kB"} !/^Size/ {print}'\
 
+code2=${PIPESTATUS[0]}
+[ $code2 -gt 0 ] && code=$code2
+
 [ x"$2" != x ] && shift && pkg-info __notfirst "$@"
 
+exit $code
