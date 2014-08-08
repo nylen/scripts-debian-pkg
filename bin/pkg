@@ -24,7 +24,7 @@ echo '
 [ `id -u` != 0 -a "$arg1" != source ] && sudo=sudo
 
 # If you're not using etckeeper, you should be
-if [ -e /etc/.git ]; then
+if [ -e /etc/.git -a "$arg1" != source ]; then
     git="$sudo etckeeper vcs"
     changed=
     if ! $git diff --exit-code; then
