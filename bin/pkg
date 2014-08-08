@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# vim: set sw=4:
+
 # First argument could be a command or a package name - we'll find out later
 arg1=`echo $1 | grep -Eo "[^./].*"`
 shift
