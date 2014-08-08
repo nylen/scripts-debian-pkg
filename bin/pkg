@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # vim: set sw=4:
 
@@ -22,6 +22,31 @@ echo '
 
 # Use sudo if not root, unless getting package sources
 [ `id -u` != 0 -a "$arg1" != source ] && sudo=sudo
+
+# If you're not using etckeeper, you should be
+if [ -e /etc/.git ]; then
+    git="$sudo etckeeper vcs"
+    changed=
+    if ! $git diff --exit-code; then
+        changed="file(s) modified"
+    elif ! $git diff --cached --exit-code; then
+        changed="file(s) staged"
+    elif [ $($git ls-files -o --exclude-standard | wc -l) -gt 0 ]; then
+        changed="untracked file(s)"
+        $git ls-files -o --exclude-standard
+    fi
+    if [ -n "$changed" ]; then
+        echo
+        echo " -- WARNING -- /etc changed ($changed)"
+        echo
+        echo -n "Continuing in "
+        for i in {5..1}; do
+            echo -n "$i.."
+            sleep 1
+        done
+        echo 0
+    fi
+fi
 
 # Run apt-get
 $sudo apt-get $cmd $arg1 $arg2 "$@"
